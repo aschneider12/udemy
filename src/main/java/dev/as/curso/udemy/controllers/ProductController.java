@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import dev.as.curso.udemy.entities.Category;
-import dev.as.curso.udemy.services.CategoryService;
+import dev.as.curso.udemy.entities.Product;
+import dev.as.curso.udemy.services.ProductService;
 
 @Controller
-@RequestMapping({"/categories"})
-public class CategoryController {
+@RequestMapping({"/products"})
+public class ProductController {
 
 	@Autowired
-	private CategoryService service;
+	private ProductService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Category>> findAll(){
+	public ResponseEntity<List<Product>> findAll(){
 
 		return ResponseEntity.ok().body(service.findAll());
 	}
@@ -38,38 +38,37 @@ public class CategoryController {
 
 		try { 
 			
-			Category category = service.findById(id);
-			return ResponseEntity.ok().body(category);
+			Product product = service.findById(id);
+			return ResponseEntity.ok().body(product);
 			
 		} catch (NoSuchElementException e) {
 			//ao inves de ver la no service se ele existe, captura a exeção aqui e trata pra tela
 			//tratar exceção
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
 		}
-		
 	}
 	
 	@PostMapping
-	public ResponseEntity<Category> create(@RequestBody Category category){
+	public ResponseEntity<Product> create(@RequestBody Product product){
 		
-		category = service.create(category);
+		product = service.create(product);
 		
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(category);
+		return ResponseEntity.created(uri).body(product);
 		
 	}
 	
 	@RequestMapping(value = {"/id"}, method = RequestMethod.PUT)
-	public ResponseEntity<Category> update(@RequestBody Category category, @PathVariable Long id){
+	public ResponseEntity<Product> update(@RequestBody Product product, @PathVariable("id") Long id){
 		
-		category = service.update(category, id);
+		product = service.update(product, id);
 		
 		return ResponseEntity.noContent().build();
 		
 	}
 	
-	@DeleteMapping
+	@DeleteMapping(value = {"/id"})
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();

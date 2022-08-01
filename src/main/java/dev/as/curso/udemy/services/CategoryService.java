@@ -20,9 +20,13 @@ public class CategoryService {
 		return repository.findAll();
 	}
 	
+	 /*
+	  * optional.get()
+	  * @throws NoSuchElementException if no value is present
+	  */
 	public Category findById(Long id){
 		Optional<Category> obj = repository.findById(id);
-		return obj.get();
+		return obj.get();//esse get lança uma excpetion caso não tenha nada no objeto optional
 	}
 	
 	public Category create(Category category) {
