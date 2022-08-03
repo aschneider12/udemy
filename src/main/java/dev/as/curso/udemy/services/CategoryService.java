@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.as.curso.udemy.entities.Category;
+import dev.as.curso.udemy.exceptions.ResourceNotFoundException;
 import dev.as.curso.udemy.repositories.CategoryRepository;
 
 @Service
@@ -21,12 +22,17 @@ public class CategoryService {
 	}
 	
 	 /*
-	  * optional.get()
-	  * @throws NoSuchElementException if no value is present
+	  * optional.get() retorna NoSuchElementException if no value is present
 	  */
 	public Category findById(Long id){
-		Optional<Category> obj = repository.findById(id);
-		return obj.get();//esse get lança uma excpetion caso não tenha nada no objeto optional
+		Optional<Category> category = repository.findById(id);
+		
+		/**
+			expressão lambda do java, o metódo normal pede uma função caso não encontre o objeto
+			no caso a função é enviada diretamente para -> que retorna o newww
+		 */		
+		return category.orElseThrow(() -> new ResourceNotFoundException(id));
+		
 	}
 	
 	public Category create(Category category) {
