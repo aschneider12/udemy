@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,8 +25,9 @@ public class Category implements Serializable {
 	
 	private String name;
 	
-	@OneToMany(mappedBy = "category")
-	private List<Product> products = new ArrayList<Product>();
+	//lazy pq se deixar ele tentar carregar da um erro de noproxy, pq ele tenta carregar mas a sessao do hibernate ja ta
+//	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+//	private List<Product> products = new ArrayList<Product>();
 	
 	public Category() {
 		
@@ -49,6 +51,14 @@ public class Category implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+//	public List<Product> getProducts() {
+//		return products;
+//	}
+//
+//	public void setProducts(List<Product> products) {
+//		this.products = products;
+//	}
 
 	@Override
 	public int hashCode() {
